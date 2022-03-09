@@ -32,5 +32,13 @@ checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], user
                 sh 'mvn package'
         }
     }
+	    stage('Deploy') {
+            steps {
+                sshagent(['tomcat-user']) {
+sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/demo-pipeline-project/target/ maven-web-application.war /opt/apache-tomcat-9.0.59/webapps/"
+
+}
+
+        }
 	}
 }
